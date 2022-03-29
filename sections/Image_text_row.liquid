@@ -1,0 +1,80 @@
+<section class="img_txt_row">
+  <div class="container">
+    <div class="main_row_wrapper">
+      <div class="img_wrapper">
+        <div class="img_box">
+          	{% if section.settings.img_main != blank %}
+        		<img src="{{ section.settings.img_main | img_url: 'master' }}" alt="{{ section.settings.title_txt }}">
+          	{% endif %}
+        </div>
+      </div>
+      <div class="content_wrapper">
+        <div class="content_box">
+          {% if section.settings.title_txt != blank %}
+          <h3>{{ section.settings.title_txt }}</h3>
+          {% endif %}
+          {% if section.settings.review_title_txt != blank %}
+          <div class="review_txt">
+          	{% include 'icon-stars' %}{{ section.settings.review_title_txt }}
+          </div>
+          {% endif %}
+          {% if section.settings.rich_txt != blank %}
+          <div class="rich_txt">{{ section.settings.rich_txt }}</div>
+          {% endif %}
+          {% if section.settings.btn_title != blank %}
+          	<a class="btn-primary" href="{{ section.settings.btn_url }}">{{ section.settings.btn_title }}</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "Image Text Row",
+    "settings": [
+		{
+			"type": "image_picker",
+			"id": "img_main",
+			"label": "Image"
+		},
+		{
+			"type": "textarea",
+			"id": "title_txt",
+			"label": "Title"
+		},
+		{
+			"type": "textarea",
+			"id": "review_title_txt",
+			"label": "Reviews Text"
+		},
+		{
+			"type": "richtext",
+			"id": "rich_txt",
+			"label": "Content"
+		},
+		{
+			"type": "text",
+			"id": "btn_title",
+			"label": "Button Title"
+		},
+		{
+			"type": "url",
+			"id": "btn_url",
+			"label": "Button Url"
+		}
+	],
+	"presets": [
+      {
+        "name": "Image Text Row",
+        "category": "Index"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

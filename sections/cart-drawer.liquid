@@ -1,0 +1,412 @@
+<div class="my-floating-cart">
+	<div class="cart_drawer">
+        <div class="cart_content">
+          <div class="drwer_head">
+            <div class="drawer-inner">
+              <div class="head_title">
+                {% if section.settings.title_cart != blank %}
+                  <h2>{{ section.settings.title_cart }}   {%- if cart != empty -%}<div class="count_label cart-count" data-ajax-cart-bind-state="cart.item_count">{{ cart.items_counts }}</div>{%- endif -%}</h2>
+                {% endif %}
+                <div class="close_div" data-ajax-cart-toggle-class-button="js-my-cart-open | remove">
+                   {% include 'icon-drawer-close' %}
+                </div>
+              </div>
+              {% if section.settings.head_note_drawer != blank %}
+              <p class="head_note">{{ section.settings.head_note_drawer }}</p>
+              {% endif %}
+            </div>
+      	  </div>
+          <div class="inner_wrapper" data-ajax-cart-section >
+             {%- if cart != empty -%}
+              <div class="my-cart__items" data-ajax-cart-section-scroll>
+                {% assign cartProduct = "" %}
+                {% for item in cart.items %} 
+                    {% assign cartProduct = cartProduct | append: "," | append: item.product_id  %}
+                {% endfor %}
+                {% assign product_gift = all_products[section.settings.product_gift] %}
+                {% assign total_cart_item_price = 0 %}
+                {% assign total_cart_compare_price = 0 %}
+                {% for item in cart.items %}
+                {% assign total_cart_item_price = total_cart_item_price | plus:item.final_line_price  %}
+                {% assign compare_price = item.variant.compare_at_price | times: item.quantity %} 
+                {% assign total_cart_compare_price = total_cart_compare_price | plus: compare_price %}
+                <div class="item_drawer" {% if cartProduct contains product_gift.id %}id="{{ item.product.title | handle }}_remove"{% endif %}>
+                  <div class="img_div">
+                        <a href="{{ item.url | within: collections.all }}">
+                          <img src="{{ item.image | img_url: '' }}" width="110" height="146" alt="{{ item.title }}">
+                        </a>
+                  </div>
+                  <div class="pro_details">
+                    <div class="title_prod">
+                      <div class="title_div"><a href="{{ item.url }}">{{ item.product.title | escape }}</a></div>
+                      {%- assign variant_options = 'template ' | split: ' ' -%}
+                          {%- if item.product.has_only_default_variant != true -%}
+                          {%- assign variant_options = item.options_with_values -%}
+                          {%- endif -%}
+                          {%- assign property_size = item.properties | size -%}
+                          {% if item.product.has_only_default_variant == false %}
+                            {% for option in variant_options %}
+                          <div class="title_variant"><span>{{ option.value }}</span> {% unless forloop.last %} / {% endunless %}</div>
+                            {% endfor %}
+                          {% endif %}
+                      	  {% assign Sr_no = 1 %}
+                      	  {% for propertie in item.properties %}
+                      		{% if propertie[1] != blank %}
+                      		<p class="add-on-color">{% if forloop.first %} / {% endif %}<span>{{propertie[1]}}</span>  {% unless forloop.last %} / {% endunless %}</p>
+                      		{% endif %}
+                      		{% assign Sr_no = Sr_no | plus:1 %}
+                      	  {% endfor %}
+                          {% if item.selling_plan_allocation.selling_plan != blank %}
+                              <p class="product-option">{{ item.selling_plan_allocation.selling_plan.name }}</p>
+                          {% endif %}
+                      	  
+                    </div>
+                    <div class="remove_prod " >
+                      <a data-ajax-cart-request-button href="/cart/change?line={{ forloop.index }}&amp;quantity=0" >
+                        {% include 'icon-remove' %}
+                      </a>
+                    </div>
+
+                      <div class="qty_div">
+                        <div class="qty-main">
+                          <a class="plus_btn" data-ajax-cart-request-button href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}"> + </a>
+                          <input data-ajax-cart-quantity-input="{{ forloop.index }}" readonly value="{{ item.quantity }}" type="text" >
+                          <a class="minus_btn" data-ajax-cart-request-button href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | minus: 1 }}"> - </a>
+                        </div>
+                      </div>
+
+                    <div class="total_div">{{ item.final_line_price | money }} <span class="compare_price">{{ compare_price | money  }}</span></div>
+                    <div class="key_note" data-ajax-cart-messages="{{ item.key }}"></div>
+                  </div>
+                  <div class="skeleton">
+                    <div class="s-img"></div>
+                    <div class="s-line first"></div>
+                    <div class="s-line second"></div>
+                    <div class="s-line third"></div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              <div class="total-div">
+                <div class="subtotal div_total">
+                  <p class="label_p">Subtotal</p>
+                  <p class="price_p">{{total_cart_compare_price  | money}}</p>
+                </div>
+                <div class="estimated_shipping div_total">
+                  <p class="label_p">Total Savings</p>
+                  <p class="price_p">{{total_cart_compare_price | minus: total_cart_item_price | money }}</p>
+                </div>
+                <div class="estimated_total div_total">
+                  <p class="label_p">Total</p>
+                  <p class="price_p">{{ cart.total_price | money}}</p>
+                </div>
+                <div class="secure-payment">
+                  {{ section.settings.payment_icon }}
+
+                  {% if section.settings.payment_txt != blank %}
+                      <p>
+                        <svg width="10" height="13" viewBox="0 0 10 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9.38774 5.78744H8.46368V2.58164C8.46368 1.56981 7.68502 0.749756 6.72427 0.749756H3.35417C2.39342 0.749756 1.61477 1.56981 1.61477 2.58164V5.78744H0.690711C0.450184 5.78744 0.255859 5.99209 0.255859 6.24541V11.7411C0.255859 11.9944 0.450184 12.199 0.690711 12.199H9.38774C9.62826 12.199 9.82259 11.9944 9.82259 11.7411V6.24541C9.82259 5.99209 9.62826 5.78744 9.38774 5.78744ZM5.41972 9.17929V9.9378C5.41972 10.0008 5.3708 10.0523 5.31101 10.0523H4.76744C4.70765 10.0523 4.65873 10.0008 4.65873 9.9378V9.17929C4.54655 9.09447 4.46283 8.97435 4.4196 8.83623C4.37637 8.69811 4.37587 8.5491 4.41818 8.41066C4.46048 8.27222 4.5434 8.15149 4.655 8.06584C4.7666 7.98019 4.90113 7.93404 5.03922 7.93404C5.17731 7.93404 5.31184 7.98019 5.42345 8.06584C5.53505 8.15149 5.61797 8.27222 5.66027 8.41066C5.70257 8.5491 5.70207 8.69811 5.65885 8.83623C5.61562 8.97435 5.53189 9.09447 5.41972 9.17929ZM7.48526 5.78744H2.59318V2.58164C2.59318 2.13941 2.93427 1.78019 3.35417 1.78019H6.72427C7.14418 1.78019 7.48526 2.13941 7.48526 2.58164V5.78744Z" fill="#4F4F4F"/>
+                        </svg>
+                        {{ section.settings.payment_txt }}
+                      </p>
+                  {% endif %}
+                </div>
+              </div>
+             {% else %}
+            	<div class="empty_product">
+                    <div class="head_div">
+                      {% if section.settings.empty_title != blank %}
+                          <h4>{{ section.settings.empty_title }}</h4>
+                      {% endif %}
+                      {% if section.settings.subtitle_empty != blank %}
+                          <p>{{ section.settings.subtitle_empty }}</p>
+                      {% endif %}
+                    </div>
+                    <div class="product_emty_row">
+                      {% assign collection_empty = collections[section.settings.empty_collection] %}
+                      {% for product in collection_empty.products limit:3 %} 
+                          <div class="product_box">
+                            <img src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.title }}">
+                            <h5>{{ product.title }}</h5>
+                            <div class="btn_price_div">
+                              <div class="total_div">{{ product.price | money }} <span class="max-price">{{ product.compare_at_price_min | money}}</span></div>
+                              <div class="btn_form_div">
+                                <product-form class="product-form">
+                                    {%- form 'product', product, data-productid: product.id, id: product_form_id, class: 'form product_form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                                        <input type="hidden" name="id" data-productid="{{ product.id }}" value="{{ product.selected_or_first_available_variant.id }}">
+                                            <div class="product-form__buttons">
+                                                <button type="submit" name="add" class="btn-primary btn_drawer" title="Add to cart"
+                                                {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
+                                                  {% if product.selected_or_first_available_variant.available != false %}
+                                                    Add
+                                                  {% else %}
+                                                    Soldout
+                                                  {% endif %}
+                                                  <div class="product-header__button-loader">
+                                                        <div class="product-header__button-loader-ball"></div>
+                                                        <div class="product-header__button-loader-ball"></div>
+                                                        <div class="product-header__button-loader-ball"></div>
+                                                  </div>
+                                                </button>
+                                            </div>
+                                       {%- endform -%}
+                                </product-form>
+                              </div>
+                            </div>
+                          </div>
+                      {% endfor %}
+                    </div>
+                    {% if section.settings.empty_shop_all != blank %}
+                      <div class="richtxt">{{ section.settings.empty_shop_all }}</div>
+                    {% endif %}
+                  </div>
+             {% endif %}
+          </div>
+          <div class="btn_div"> 
+              {%- if cart != empty -%} 
+               {% if section.settings.timer_note != blank %}
+               <div class="cart_clock">
+                 <div class="main_cart">{% include 'icon-clock' %} {{ section.settings.timer_note }} <div id="countdown"></div></div>
+               </div>
+               {% endif %}
+               <a href="/checkout" class="btn-primary"> Proceed to Checkout — <span data-ajax-cart-bind-state="cart.total_price | money_with_currency">{{ cart.total_price | money }}</span> </a>
+               <div class="dynamic_btn">
+                {{ form | payment_button }}
+               </div>
+               {% if section.settings.btn_note != blank %}
+               <p>{{ section.settings.btn_note }}</p>
+               {% endif %}
+               {% else %}
+                <a href="{{ routes.all_products_collection_url }}" class="btn-primary" data-ajax-cart-section> Cart is lonely 😣 </a>
+               {% endif %}
+            </div>
+          <div class="main_product_empty  empty_{%- if cart != empty -%}not_wrapper {%else%}wrapper{%- endif -%}">
+                  <div class="product_div">
+                    {% if section.settings.product_gift != blank %}
+                    {% comment %}
+                        {% render 'gift-wrapping' %}
+                    {% endcomment %}
+                    <div class="gift-box" >
+                      
+                      <div class="check_box">{{ section.settings.gift_txt }} ({{ product_gift.price | money }})
+                          <input id="gift_check" type="checkbox" name="gift_wrap" value="yes" {% if cartProduct contains product_gift.id %} checked {% endif %}  data-variant-id="{{ product_gift.selected_or_first_available_variant.id }}" >
+                          <span class="check_mark" for="giftbox"></span>
+                        	
+                      </div>
+                      <a id="remove_gift_dot" style="display:none;" data-ajax-cart-request-button="" href="/cart/change?line={{ product_gift.selected_or_first_available_variant.id }}&amp;quantity=0">remove</a>
+					
+                      <product-form class="product-form gift_form" >
+                        {%- form 'product', product_gift, data-productid: product_gift.id, id: 'gift_form', class: 'form gift_form product_form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                        <input type="hidden" name="id"  value="{{ product_gift.selected_or_first_available_variant.id }}">
+                        <input type="hidden" name="attributes[gift-wrapping]" value="yes" >
+                        <div class="product-form__buttons">
+                          <button type="submit" name="add" class="btn-primary btn_drawer btn_gift" title="Add to cart"
+                                  {% if product_gift.selected_or_first_available_variant.available == false %}disabled{% endif %}>
+                            {% if product_gift.selected_or_first_available_variant.available != false %}
+                            Add
+                            {% else %}
+                            Soldout
+                            {% endif %}
+                          </button>
+                        </div>
+                        {%- endform -%}
+                      </product-form>
+                    </div>
+                    {% endif %}
+                    <p class="related_product_title">{{ section.settings.title_txt }}</p>
+                    <div class="prod_div_inner">
+                      {% assign collection = collections[section.settings.collection_main] %}
+                      {% for product in collection.products %}  
+                      {% unless cartProduct contains product.id %}
+                      {% assign upsell_current_variant = product.selected_or_first_available_variant | default: product.variants.first %}
+                      {%- assign product_form_id = 'product-form-' | append: section.id -%}
+                      <div class="item_drawer prod--{{ product.id }}">
+                        <div class="img_div">
+                            <img src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.title }}">
+                        </div>
+                        <div class="pro_details">
+                          <div class="main_title">
+                            <div class="title_div"><a href="{{ product.url }}">{{ product.title }}</a></div>
+                            <div class="total_div">{{ product.price | money }} <span class="max-price">{{ product.compare_at_price_min | money}}</span></div>
+                          </div>
+                          <div class="form_div">
+                            <product-form class="product-form">
+                                  {%- form 'product', product, data-productid: product.id, id: product_form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                                      <input type="hidden" name="id" data-productid="{{ product.id }}" value="{{ product.selected_or_first_available_variant.id }}">
+                                          <div class="product-form__buttons">
+                                              <button type="submit" name="add" class="btn-primary btn_drawer" title="Add to cart"
+                                              {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
+                                                {% if product.selected_or_first_available_variant.available != false %}
+                                                  Add
+                                                {% else %}
+                                                  Soldout
+                                                {% endif %}
+                                              </button>
+                                          </div>
+                                     {%- endform -%}
+                              </product-form>
+                          </div>
+                          </div>
+                      </div>
+                      {% endunless %}
+                      {% endfor %}
+                    </div>
+                  </div>
+            </div>
+          </div>
+	</div>
+</div>
+<style>
+  .my-floating-cart{
+  display: flex;
+  flex-direction: column;
+  position:fixed;
+  top:0;
+  right:-100%;
+  max-width:375px;
+  width:100%;
+  height:100vh;
+  transform: translateX(100%);
+  transition:all .7s  ease;
+  background:#fff;
+  z-index:9999999;
+  }
+.js-my-cart-open{
+  	overflow:hidden;
+	 
+}
+.js-my-cart-open  .my-floating-cart { 
+       transform: translateX(0);
+  	   right:0%;
+}
+.js-my-cart-open  .my-floating-cart .cart_drawer{
+  box-shadow: 0px 10px 97px rgba(0, 0, 0, 0.53);
+}
+  .js-my-cart-open .backdrop_div{
+    display:block; 
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: linear-gradient(180deg, rgba(174, 140, 242, 0.21) 0%, rgba(172, 214, 255, 0.21) 100%);
+/*     -webkit-backdrop-filter: blur(6px); */
+/*     backdrop-filter: blur(6px); */
+    transition:all .7s ease;
+    z-index:999999;
+  }
+  
+ @media (max-width:375px){  
+.js-my-cart-open  .my-floating-cart .cart_drawer{
+    box-shadow:none;
+  }  
+}
+  
+</style>
+{% schema %} 
+{ 
+	"name": "Cart Drawer" ,
+	"settings":[
+		{
+			"type": "header",
+			"content": "Drawer Head"
+		},
+		{
+			"type": "textarea",
+			"id": "title_cart",
+			"label": "Title Drawer"
+		},
+		{
+			"type": "textarea",
+			"id": "head_note_drawer",
+			"label": "Head Note"
+		},
+		{
+			"type": "header",
+			"content": "Payment Icons And Text"
+		},
+		{
+			"type": "html",
+			"id": "payment_icon",
+			"label": "Icon Code"
+		},
+		{
+			"type": "textarea",
+			"id": "payment_txt",
+			"label": "Content"
+		},
+		{
+			"type": "header",
+			"content": "Gift Product"
+		},
+		{
+			"type": "product",
+			"id": "product_gift",
+			"label": "Product"
+		},
+		{
+			"type": "textarea",
+			"id": "gift_txt",
+			"label": "Gift Title"
+		},
+		{
+			"type": "checkbox",
+			"id": "enable_product_sec",
+			"label": "Enable Upsell Section?"
+		},
+		{
+			"type": "text",
+			"id": "title_txt",
+			"label": "Title"
+		},
+		{
+			"type": "collection",
+			"id": "collection_main",
+			"label": "collection"
+		},
+		{
+			"type": "header",
+			"content": "Timer"
+		},
+		{
+			"type": "textarea",
+			"id": "timer_note",
+			"label": "Content"
+		},
+		{
+			"type": "header",
+			"content": "Discount Note"
+		},
+		{
+			"type": "textarea",
+			"id": "btn_note",
+			"label": "Content"
+		},
+		{
+			"type": "header",
+			"content": "Empty Cart"
+		},
+		{
+             "type": "textarea",
+             "id": "empty_title",
+             "label": "Title"
+		},
+		{
+             "type": "textarea",
+             "id": "subtitle_empty",
+             "label": "Subtitle"
+		},
+		{
+             "type": "collection",
+             "id": "empty_collection",
+             "label": "Collection"
+		},
+		{
+             "type": "richtext",
+             "id": "empty_shop_all",
+             "label": "Bottom Content"
+		}
+	]
+} 
+{% endschema %}

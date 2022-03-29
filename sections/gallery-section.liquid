@@ -1,0 +1,85 @@
+<section class="gallery-section">
+  <div class="title_div">
+    {% if section.settings.title_txt %}
+    	<h3>{{ section.settings.title_txt }}</h3>
+    {% endif %}
+    {% if section.settings.subtitle_txt %}
+    	<p>{{ section.settings.subtitle_txt }}</p>
+    {% endif %}
+  </div>
+  <div class="main_row gallery_slider">
+    {% for block in section.blocks %}
+      {% if block.settings.gallery_img != blank %}
+      <div class="img_main_slide">
+        <div class="img_card">
+            <img src="{{ block.settings.gallery_img |img_url: 'master' }}" alt="Gallary Image">
+        </div>
+      </div>
+      {% endif %}
+	{% endfor %}
+  </div>
+</section>
+<style>
+  .gallery-section{
+		background: linear-gradient(90deg, #F5F6FF, #E6F2FF, #FDEDF9, #FFF1C6);
+    	animation: bg_amin 15s ease infinite; 
+      	background-size: 400% 400%;
+  }
+
+ 
+  @keyframes bg_amin {
+    0% {
+      background-position: 0 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+       background-position: 0% 50%;
+    }
+  } 
+  
+</style>
+{% schema %}
+  {
+    "name": "Gallery",
+    "settings": [
+		{
+			"type": "textarea",
+			"id": "title_txt",
+			"label": "Title"
+		},
+		{
+			"type": "textarea",
+			"id": "subtitle_txt",
+			"label": "Subtitle"
+		}
+	],
+	"blocks":[
+		{
+			"type": "gallery",
+			"name": "Image",
+			"settings":[
+				{
+					"type": "image_picker",
+					"id": "gallery_img",
+					"label":"Image"
+				}
+			]
+			
+		}
+	],
+	"presets": [
+      {
+        "name": "Gallery",
+        "category": "Index"
+      }
+    ]	
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

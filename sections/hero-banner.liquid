@@ -1,0 +1,94 @@
+<section class="hero_banner">
+  {% if section.settings.bg_img != blank %}
+  	<img class="bg-img" src="{{ section.settings.bg_img | img_url: 'master' }}"  alt="Background Image">
+  {% endif %}
+  {% if section.settings.mobile_bg_img != blank %}
+  	<img class="tab-bg-img" src="{{ section.settings.mobile_bg_img | img_url: 'master' }}"  alt="Background Image">
+  {% endif %}
+  <div class="inner_row">
+  <div class="container">
+      <div class="content_box">
+        <div class="label_box">
+          {% if section.settings.icon_code != blank %}
+        	{{ section.settings.icon_code }}
+          {% endif %}
+          {% if section.settings.label_txt != blank %}
+          	{{ section.settings.label_txt }}
+          {% endif %}
+        </div>
+        {% if section.settings.title_txt != blank %}
+        	<h3>{{ section.settings.title_txt }}</h3>
+        {% endif %}
+        {% if section.settings.btn_title != blank %}
+        	<a class="btn-primary">{{ section.settings.btn_title }} <img class="btn-img" src="https://cdn.shopify.com/s/files/1/0431/5201/5518/files/add-to-cart_2b04e387-fe2c-477e-a6e3-8043307f35a1.png?v=1642075852" alt="hand icon"> </a>
+        {% endif %}
+        {% if section.settings.review_txt != blank %}
+        <p class="start-birdge">{% include 'icon-stars' %}{{ section.settings.review_txt }}</p>
+        {% endif %}
+      </div>	
+    </div>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "Hero Banner",
+    "settings": [
+		{
+			"type": "image_picker",
+			"id": "bg_img",
+			"label": "Background Image"
+		},
+		{
+			"type": "image_picker",
+			"id": "mobile_bg_img",
+			"label": "Mobile Background Image"
+		},
+		{
+			"type": "header",
+			"content": "Top Label Content"
+		},
+		{
+			"type": "html",
+			"id": "icon_code",
+			"label": "Icon SVG Code"
+		},
+		{
+			"type": "textarea",
+			"id": "label_txt",
+			"label": "Label Title"
+		},
+		{
+			"type": "textarea",
+			"id": "title_txt",
+			"label": "Title"
+		},
+		{
+			"type": "text",
+			"id": "btn_title",
+			"label": "Button Title"
+		},
+		{
+			"type": "url",
+			"id": "btn_url",
+			"label": "Button Url"
+		},
+		{
+			"type": "textarea",
+			"id": "review_txt",
+			"label": "Review Text"
+		}
+	],
+	"presets": [
+      {
+        "name": "Hero Banner",
+        "category": "Index"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

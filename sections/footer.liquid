@@ -1,0 +1,247 @@
+<footer class="footer">
+    <div class="top_row">
+      <div class="news_letter_div">
+        <div class="logo_img">
+          {% if section.settings.logo_svg != blank %}
+              {{ section.settings.logo_svg }}
+          {% else %}
+              <img src="{{ section.settings.logo_img | img_url: 'master' }}" alt="{{ shop.name }}">
+          {% endif %}
+        </div>
+        {% comment %}
+        {% if section.settings.tag_line != blank %}
+        <div class="tag_line text-yellow">{{ section.settings.tag_line }}</div>
+        {% endif %}
+        {% endcomment %}
+        {% if section.settings.title_txt != blank %}
+        	<h3>{{ section.settings.title_txt }}</h3>
+        {% endif %}
+        <div class="form_div">
+          {% form 'customer', id: formId, novalidate: 'novalidate' %}
+          {%- if form.posted_successfully? -%}
+          <p class="form-message form-message--success font-s-11" style="color:green;" tabindex="-1" data-form-status>
+            Thanks for subscribing
+          </p>
+          {%- endif -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          {% if section.settings.form_label != blank %}
+          <label class="input-label">{{ section.settings.form_label }}</label>
+          {% endif %}
+          <div class="input-group {% if form.errors %} input-group--error{% endif %}">
+            <input type="email"
+                   name="contact[email]"
+                   id="{{ formId }}-email"
+                   class="input-group__field newsletter__input font{% if form.errors %} input--error{% endif %}"
+                   value="{{ form.email }}"
+                   placeholder=""
+                   aria-label=""
+                   aria-required="true"
+                   required
+                   autocorrect="off"
+                   autocapitalize="off"
+                   {% if form.errors %}
+                   aria-invalid="true"
+                   aria-describedby="{{ formId }}-email-error"
+                   data-form-status
+                   {% endif %}>
+            {% if section.settings.btn_title != blank %}
+            <button type="submit" class="btn newsletter__submit" name="commit" >
+              {{ section.settings.btn_title }}
+            </button>
+            {% endif %}
+          </div>
+          {% if form.errors contains 'email' %}
+          <span id="{{ formId }}-email-error" class="input-error-message">
+            <span class="site-footer__newsletter-error font-s-11" style="color:red;">{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+          </span>
+          {% endif %}
+          {% endform %}
+        </div>
+        {% if section.settings.form_note != blank %}
+        <p class="note-p">{{ section.settings.form_note }}</p>
+        {% endif %}
+      </div>
+      <div class="right_wrapper">
+        <div class="link_div">
+        {% for block in section.blocks %}
+        <div class="link_box">
+          {% if block.settings.link_title != blank  %}
+          <h3>{{ block.settings.link_title }}</h3>
+          {% endif %}
+          <ul class="menu_ul">
+            {% for link in linklists[block.settings.link_menu].links  %}
+            <li><a href="{{ link.title }}">{{ link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endfor %}
+      </div>
+        <div class="logo_img">
+          {% if section.settings.logo_svg != blank %}
+              {{ section.settings.logo_svg }}
+          {% else %}
+              <img src="{{ section.settings.logo_img | img_url: 'master' }}" alt="{{ shop.name }}">
+          {% endif %}
+        </div>
+        <div class="social_links">
+          <p>
+            {{ section.settings.follow_title }}
+            {% if settings.social_facebook_link != blank %}
+              <a href="{{ settings.social_facebook_link }}">{% include 'icon-facebook' %}</a>
+            {% endif %}
+            {% if settings.social_instagram_link != blank %}
+              <a href="{{ settings.social_instagram_link }}">{% include 'icon-instagram' %}</a>
+            {% endif %}
+            {% if settings.social_twitter_link != blank %}
+              <a href="{{ settings.social_twitter_link }}">{% include 'icon-twitter' %}</a>
+            {% endif %}
+            {% if settings.social_tiktok_link != blank %}
+              <a href="{{ settings.social_tiktok_link }}">{% include 'icon-tiktok' %}</a>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+    </div>
+  	<div class="bottom_footer">
+      <div class="link_wrapper">
+        <ul class="link_ul">
+          {% for link in linklists[section.settings.link_bot_menu].links  %}
+          <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endfor %}
+        </ul>
+        <div class="copy_txt_pdp" style="display:none;">
+        	{% if section.settings.richtxt != blank %}
+              <p>{{ section.settings.copy_txt }}</p>
+          	{% endif %}
+        </div>
+      </div>
+      <div class="middle_wrapper">
+        <div class="mail_box"><a href="mailto:{{ section.settings.mail_title }}">{% include 'icon-mail' %} <span class="label_email_PDP" style="display:none;">You can email us anytime at</span>&nbsp;{{ section.settings.mail_title }}</a></div>
+        <div class="payment_icons" style="display:none;">
+        	{% include 'payment-icons' %}
+        </div>
+        <div class="social_links">
+          <p>
+            {{ section.settings.follow_title }}
+            {% if settings.social_facebook_link != blank %}
+              <a href="{{ settings.social_facebook_link }}">{% include 'icon-facebook' %}</a>
+            {% endif %}
+            {% if settings.social_instagram_link != blank %}
+              <a href="{{ settings.social_instagram_link }}">{% include 'icon-instagram' %}</a>
+            {% endif %}
+            {% if settings.social_twitter_link != blank %}
+              <a href="{{ settings.social_twitter_link }}">{% include 'icon-twitter' %}</a>
+            {% endif %}
+            {% if settings.social_tiktok_link != blank %}
+              <a href="{{ settings.social_tiktok_link }}">{% include 'icon-tiktok' %}</a>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+      <div class="bottom_row">
+        <div class="left-col">
+          {% if section.settings.richtxt != blank %}
+              <p>{{ section.settings.copy_txt }}</p>
+          {% endif %}
+        </div>
+        {% if section.settings.richtxt != blank %}
+        <div class="right-col">
+          {{ section.settings.richtxt }}
+        </div> 
+        {% endif %}
+      </div>
+    </div>
+</footer>
+{% schema %}
+  {
+    "name": "Footer",
+    "settings": [
+		{
+			"type": "image_picker",
+			"id": "logo_img",
+			"label": "Logo"
+		},
+		{
+			"type": "html",
+			"id": "logo_svg",
+			"label": "Logo SVG code"
+		},
+		{
+			"type": "header",
+			"content": "Newsletter"
+		},
+		{
+			"type": "textarea",
+			"id": "tag_line",
+			"label": "Tag Line"
+		},
+		{
+			"type": "textarea",
+			"id": "title_txt",
+			"label": "Title"
+		},
+		{
+			"type": "textarea",
+			"id": "form_label",
+			"label": "Input Label"
+		},
+	    {
+			"type": "text",
+			"id": "btn_title",
+			"label": "Button Title"
+		},
+		{
+			"type": "textarea",
+			"id": "form_note",
+			"label": "Form Note"
+		},
+		{
+			"type": "header",
+			"content": "Bottom Row"
+		},
+		{
+            "type": "link_list",
+            "id": "link_bot_menu",
+            "label": "Menu"
+		},
+		{
+            "type": "textarea",
+            "id": "mail_title",
+            "label": "E-Mail"
+		},
+		{
+            "type": "textarea",
+            "id": "follow_title",
+            "label": "Social Title"
+		},
+		{
+			"type": "textarea",
+			"id": "copy_txt",
+			"label": "Copy Rights"
+		},
+		{
+			"type": "richtext",
+			"id": "richtxt",
+			"label": "Right Text"
+		}
+	],
+	"blocks":[
+		{
+			"type": "menu_footer",
+			"name": "Menu",
+			"settings":[
+				{
+                    "type": "textarea",
+                    "id": "link_title",
+                    "label": "Title"
+                },
+                {
+                    "type": "link_list",
+                    "id": "link_menu",
+                    "label": "Menu"
+                }
+			]
+		}
+	]
+  }
+{% endschema %}

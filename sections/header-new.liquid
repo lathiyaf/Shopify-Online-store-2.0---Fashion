@@ -1,0 +1,114 @@
+<header class="TBH_header">
+  <div class="header_inner">
+    <div class="menu_icon">
+    	{% include 'icon-hamburger' %}
+    </div>
+    <div class="logo_div">
+      <a href="{{ shop.url }}">
+      	{% if section.settings.svg_logo != blank %}
+    		{{ section.settings.svg_logo }}
+      	{% else %}
+      		<img class="" src="{{ section.settings.logo_img | img_url: 'master' }}" alt="{{ shop.name }} Logo Image">
+      	{% endif %}
+      </a>
+    </div>
+    <div class="menu_div">
+      <ul class="menu_ul">
+        {% for link in linklists[section.settings.menu_main].links  %}
+        	<li><a href="{{ link.url }}">{{ link.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="right_icon_div">
+      {% if section.settings.title_link != blank %}
+      <div class="right_mob_link">
+        <a href="{{ section.settings.link_right }}">{{ section.settings.title_link }}</a>
+      </div>
+      {% endif %}
+      <div class="cart_icon">
+        <a href="/cart">
+          <div class="desk_icon_cart" {% unless template.name == 'cart' %}data-ajax-cart-toggle-class-button="js-my-cart-open | add"{% endunless %}>
+          {% include 'icon-cart' %}
+          </div>
+          <div class="mob_icon_cart" {% unless template.name == 'cart' %}data-ajax-cart-toggle-class-button="js-my-cart-open | add"{% endunless %}>
+          {% include 'icon-cart-mob' %}
+          </div>
+        </a>
+        <div class="count_label" data-ajax-cart-bind-state="cart.item_count">{{ cart.items_counts }}</div>
+      </div>
+    </div>
+  </div>
+  <div class="mobile_menu" id="mobile_menu">
+    <div class="menu_inner">
+      <div class="menu_head">
+        <div class="close_menu">{% include 'icon-close' %}</div>
+      </div>
+      <div class="menu_div_mob">
+      	<ul class="menu_ul">
+          {% for link in linklists[section.settings.menu_main].links  %}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% if template.name == 'index' %}
+  <div class="collection_navigator">
+    <div class="main_slider_navigator">
+      {%- for collection in collections -%}
+      <div class="collection_box">
+        <a htef="{{ collection.url }}">{{ collection.title }}</a>
+      </div>
+      {%- endfor -%}
+    </div>
+  </div>
+  {% endif %}
+</header>
+{% schema %}
+  {
+    "name": "Header",
+    "settings": [
+		{
+			"type": "image_picker",
+			"id": "logo_img",
+			"label": "Logo Image"
+		},
+		{
+			"type": "html",
+			"id": "svg_logo",
+			"label": "SVG Logo code"
+		},
+		{
+			"type": "link_list",
+			"id": "menu_main",
+			"label": "Desktop Menu"
+		},
+		{
+			"type": "header",
+			"content": "Mobile Header"
+		},
+		{
+			"type": "link_list",
+			"id": "menu_mobile",
+			"label": "Mobile Menu"
+		},
+		{
+			"type": "text",
+			"id": "title_link",
+			"label": "Title"
+		},
+		{
+			"type": "url",
+			"id": "link_right",
+			"label": "Url"
+		}
+		
+	]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

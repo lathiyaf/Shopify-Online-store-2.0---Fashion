@@ -1,0 +1,113 @@
+<section class="get-questions">
+  <div class="container">
+    <div class="inner_wrapper">
+      <div class="title-wrapper">
+         {% if section.settings.title_txt != blank %}
+          <h3>{{ section.settings.title_txt }}</h3>
+         {% endif %}
+          {% if section.settings.subtitle_txt != blank %}
+          <p>{{ section.settings.subtitle_txt }}</p>
+         {% endif %}
+       </div>
+      <div class="box-row">
+        {% if section.settings.richtxt != blank %}
+        <a href="https://api.whatsapp.com/send?phone={{ section.settings.phone_number }}">
+        <div class="box-wrapper">
+        	{% if section.settings.icon_code != blank %}
+            	{{ section.settings.icon_code }}
+            {% endif %}
+          	
+          	{% if section.settings.richtxt != blank %}
+            <div class="richtext_div">
+          		{{ section.settings.richtxt }}
+            </div>
+            {% endif %}
+        </div>
+        </a>
+        {% endif %}
+        {% if section.settings.richtxt_2 != blank %}
+        <a href="mailto:{{ section.settings.mail_box }}">
+        <div class="box-wrapper">
+        	{% if section.settings.icon_code_2 != blank %}
+            	{{ section.settings.icon_code_2 }}
+            {% endif %}
+          	
+          	{% if section.settings.richtxt_2 != blank %}
+            <div class="richtext_div">
+          		{{ section.settings.richtxt_2 }}
+            </div>
+            {% endif %}
+        </div>
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "Get Questions",
+    "settings": [
+		{
+			"type": "textarea",
+			"id": "title_txt",
+			"label": "Title"
+		},
+		{
+			"type": "textarea",
+			"id": "subtitle_txt",
+			"label": "Subtitle"
+		},
+		{
+			"type": "header",
+			"content": "Chat"
+		},
+		{
+			"type":"text",
+			"id": "phone_number",
+			"label": "Your Chat Number"
+		},
+		{
+			"type": "html",
+			"id": "icon_code",
+			"label": "Icon Code"
+		},
+		{
+			"type": "richtext",
+			"id": "richtxt",
+			"label": "Title"
+		},
+		{
+			"type": "header",
+			"content": "E-mail"
+		},
+		{
+			"type": "textarea",
+			"id": "mail_box",
+			"label": "Your Email"
+		},
+		{
+			"type": "html",
+			"id": "icon_code_2",
+			"label": "Icon Code"
+		},
+		{
+			"type": "richtext",
+			"id": "richtxt_2",
+			"label": "Title"
+		}
+	],
+	"presets": [
+      {
+        "name": "Get Questions",
+        "category": "Index"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

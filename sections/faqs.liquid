@@ -1,0 +1,75 @@
+<section class="faqs_section">
+  <div class="container">
+    <div class="main_faqs">
+      <div class="title_wrapper">
+        {% if section.settings.title_txt != blank %}
+        <h3>{{ section.settings.title_txt }}</h3>
+        {% endif %}
+        {% if section.settings.subtitle_txt != blank %}
+        <p>{{ section.settings.subtitle_txt }}</p>
+        {% endif %}
+      </div>
+      <div class="faq_wrapper">
+        {% for block in section.blocks %}
+        <div class="set">
+          	{% if block.settings.faq_qua != blank %}
+              <div class="main_a {% if forloop.first %} active {% endif %}">{{ block.settings.faq_qua }}</div>
+              {% if block.settings.faq_content != blank%}
+                <div class="content {% if forloop.first %} active_content {% endif %}">
+                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.</p>
+                </div>
+              {% endif %}
+          	{% endif %}
+  		</div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "FAQs",
+    "settings": [
+		{
+			"type": "textarea",
+			"id": "title_txt",
+			"label": "Title"
+		},
+		{
+			"type": "textarea",
+			"id": "subtitle_txt",
+			"label": "Subtitle"
+		}
+	],
+	"blocks":[
+		{
+			"type": "faqs",
+			"name": "FAQs",
+			"settings":[
+				{
+					"type": "textarea",
+					"id": "faq_qua",
+					"label": "Title"
+				},
+				{
+					"type": "richtext",
+					"id": "faq_content",
+					"label": "Content"
+				}
+			]
+		}
+	],
+	"presets": [
+      {
+        "name": "FAQs",
+        "category": "Main PDP"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

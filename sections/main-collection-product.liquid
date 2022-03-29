@@ -1,0 +1,199 @@
+<link href="{{ 'collection-page.scss.css' | asset_url }}" rel="stylesheet">
+
+<section class="collection_product product_sec">
+  <div class="container">
+  	<div class="title_wrapper">
+      <h3>{{ collection.title }}</h3>
+    </div>
+    <div class="product_row_collection">
+      {% for product in collection.products %}
+        <div class="product_box">
+          
+            {% if product.compare_at_price_max > product.price %}
+            	<div class="save_label">
+            		Save {{ product.compare_at_price_max | minus: product.price | money | remove: '.00' }}
+            	</div>
+            {% endif %}
+          
+          <a href="{{ product.url }}">
+          <div class="img_box">
+          	<img src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.title }}">
+            
+           </div>
+          </a>
+          <div class="content_box">
+            <h4><a href="{{ product.url }}">{{ product.title | truncate: 25 }}</a></h4>
+            <p class="prod_price">{{ product.price | money }} {% if product.compare_at_price_max > product.price %}<span class="max-price">{{ product.compare_at_price_min | money}}</span>{% endif %}</p>
+            {% if product.available and product.variants.size > 1 %}
+            <button class="btn-primary btn_modal" popup-open="{{ forloop.index }}">Add To Cart</button>
+            {% else %}
+            <product-form class="product-form">
+               {%- form 'product', product, data-productid: product.id, id: product_form_id, class: 'form product_form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+               <select name="id"  class="product-single__variants" data-productid="{{product.id}}" style="display:none;">
+                    {% for variant in product.variants %}
+                      {% if variant.available %}
+                 	  {% assign option_1 = variant.option1 %}
+                      <option data-label="{{ variant.title }}" {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} {% assign featured_image = product.images.first | default: product.featured_image %} value="{{ variant.id }}">	
+                        {{ variant.title }}
+                      </option>
+                      {% else %}
+                        <option disabled="disabled">
+                          {{ option_1.title }} - {{ 'products.product.sold_out' | t }}
+                        </option>
+                      {% endif %}
+                    {% endfor %}
+              </select>
+              <button type="submit" name="add" class="btn-primary" title="Add to cart" {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
+                   {% if product.selected_or_first_available_variant.available != false %}
+                   Add To Cart
+                   {% else %}
+                   Soldout
+                   {% endif %}
+                	<div class="product-header__button-loader">
+                          <div class="product-header__button-loader-ball"></div>
+                          <div class="product-header__button-loader-ball"></div>
+                          <div class="product-header__button-loader-ball"></div>
+                    </div>
+               </button>
+               {%- endform -%}
+             </product-form>
+            {% endif %}
+            <a class="learn_more" href="{{ product.url }}">Learn more →</a>
+          </div>
+        </div>
+         <div class="modal_main_wrapper product-modal-{{ forloop.index }}" id="modal-{{ product.handle }}">
+       {%- assign product_form_id = 'product-form-' | append: section.id -%}
+       <div class="modal_content">
+         <div class="modal_close" popup-close="product-modal-{{ forloop.index }}">
+           {% include 'modal-close' %}
+         </div>
+         <div class="main_content"  data-product="{{ product.handle }}">
+           <div class="left_col">
+             <h3>{{ product.title }}</h3>
+			
+             <product-form class="product-form">
+               {%- form 'product', product, data-productid: product.id, id: product_form_id, class: 'form product_form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+               <select name="id"  class="product-single__variants" data-productid="{{product.id}}" style="display:none;">
+                    {% for variant in product.variants %}
+                      {% if variant.available %}
+                 	  {% assign option_1 = variant.option1 %}
+                      <option data-label="{{ variant.title }}" {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} {% assign featured_image = product.images.first | default: product.featured_image %} value="{{ variant.id }}">	
+                        {{ variant.title }}
+                      </option>
+                      {% else %}
+                        <option disabled="disabled">
+                          {{ option_1.title }} - {{ 'products.product.sold_out' | t }}
+                        </option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                 {% if product.available and product.variants.size > 1 %}
+                 <div class="main_variant_wrapper">
+                 {% assign file_extension = 'png' %}
+                 {%- for option in product.options_with_values -%}
+                      {% assign index_value = forloop.index   %}
+                       {% if option.name == 'Color' %}
+                        <fieldset class="product-form__input radio_box_wrapper_modal">
+                          <legend class="form__label">{{ option.name }}: <span class="title_selected">Dark Blue</span></legend>
+                          {%- for value in option.values -%}
+                          <div class="radio_box">
+                            <input class="quick_radio{{ index_value }}" type="radio" id="{{  value | handle }}-{{ product.handle }}"
+                                  name="{{ option.name }}"
+                                  value="{{ value | escape }}"
+
+                                  {% if option.selected_value == value %}checked{% endif %}
+                            >
+                            <label for="{{  value | handle }}-{{ product.handle }}" style="background-color:{{ value | handle}};background-image: url({{ value | handle | append: '.' | append: file_extension | asset_url }})">
+                              {{ value }}
+                            </label>
+                            </div>
+                          {%- endfor -%}
+                        </fieldset>
+                       {% elsif option.name  == 'Size' or option.name == 'Size (US Women)' %}
+                       <fieldset class="product-form__input radio_box_wrapper_modal size_box_wrapper">
+                          <legend class="form__label">{{ option.name }}: <span class="title_selected">Dark Blue</span></legend>
+                          {%- for value in option.values -%}
+                          <div class="radio_box">
+                            <input class="quick_radio{{ index_value }}" type="radio" id="{{  value | handle }}-{{ product.handle }}"
+                                  name="{{ option.name }}"
+                                  value="{{ value | escape }}"
+
+                                  {% if option.selected_value == value %}checked{% endif %}
+                            >
+                            <label for="{{  value | handle }}-{{ product.handle }}">
+                              {{ value }}
+                            </label>
+                          </div>
+                          {%- endfor -%}
+                        </fieldset>
+                       {% else %}
+                          <fieldset class="product-form__input radio_box_wrapper_modal other_box_wrapper">
+                          <legend class="form__label">{{ option.name }}: <span class="title_selected">Dark Blue</span></legend>
+                            <div class="select_box">  
+                              <label class="label_title"><span class="title_selected">Dark Blue</span></label>
+                              <div class="dropdown_wrapper">
+                              {%- for value in option.values -%}
+                                <div class="radio_box">
+                                <input class="quick_radio{{ index_value }}" type="radio" id="{{  value | handle }}-{{ product.handle }}"
+                                      name="{{ option.name }}"
+                                      value="{{ value | escape }}"
+
+                                      {% if option.selected_value == value %}checked{% endif %}
+                                >
+                                <label for="{{  value | handle }}-{{ product.handle }}">
+                                  {{ value }}
+                                </label>
+                                </div>
+                              {%- endfor -%}
+                              </div>
+                            </div>
+                        </fieldset>
+                       {% endif %}
+                    {%- endfor -%}
+                 </div>
+                 {% endif %}
+               <div class="product-form__buttons btn_div">
+                 <button type="submit" name="add" class="btn-primary btn_drawer" title="Add to cart" 
+                         {% if product.selected_or_first_available_variant.available == false %}disabled{% endif %}>
+                   {% if product.selected_or_first_available_variant.available != false %}
+                   add to cart <span class="price_span">{{ product.price | money }}</span> {% if product.compare_at_price_max > product.price %}<span class="save_label">Save {{ product.compare_at_price_max | minus: product.price | times: 100.0 | divided_by: product.compare_at_price_max | money_without_currency | times: 100 | remove: '.0'}}%</span>{% endif %}
+                   {% else %}
+                   Soldout
+                   {% endif %}
+                   <div class="product-header__button-loader">
+                          <div class="product-header__button-loader-ball"></div>
+                          <div class="product-header__button-loader-ball"></div>
+                          <div class="product-header__button-loader-ball"></div>
+                    </div>
+                 </button>
+               </div>
+               {%- endform -%}
+             </product-form>
+             {% comment %}
+             <div class="btn_div">
+               <button class="btn-primary" type="submit" name="add"> add to cart </button>
+             </div>
+             {% endcomment %}
+           </div>
+           <div class="right_content">
+             <img src="{{ product.featured_image | img_url: 'master' }}" alt="{{ product.title }}">
+           </div>
+         </div>
+       </div>
+     </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "Collection Product",
+    "settings": []
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

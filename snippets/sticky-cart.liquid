@@ -1,0 +1,20 @@
+<div class="sticky_cart" id="sticky_cart">
+  <div class="cart_inner">
+    <div class="left_content">
+      {% if settings.order_line != blank %}
+          <div class="col-box"><img src="{{ 'timer_clock_gif.gif' | asset_url }}" alt="timer"> {{ settings.order_line }}</div>
+      {% endif %}
+      {% if settings.looking_line != blank %}
+          |<div class="col-box">{% include 'icon-eye' %} {{ settings.looking_line }}</div>
+      {% endif %}
+    </div>
+    {% if settings.sticky_btn_txt != blank %}
+    <div class="right_content">
+      {% if settings.orderline_mob != blank %}
+      	<div class="mob_line"><img src="{{ 'timer_clock_gif.gif' | asset_url }}" alt="timer">{{ settings.orderline_mob }}</div>
+      {% endif %}
+      <a href="#short_des" class="btn-primary">{{ settings.sticky_btn_txt }}</a>
+    </div>
+    {% endif %}
+  </div>
+</div>

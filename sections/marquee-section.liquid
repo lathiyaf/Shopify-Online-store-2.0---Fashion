@@ -1,0 +1,50 @@
+{% if section.settings.enable_sec %}
+<section class="Marquee_section">
+    <div class="marquee">
+    	<ul class="marquee-content-items">
+        {% for block in section.blocks %}
+         {% if block.settings.text_cotnent != blank %}
+        <li>{{ block.settings.text_cotnent }}</li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+</section>
+{% endif %}
+{% schema %}
+  {
+    "name": "Marquee",
+    "settings": [
+		{
+			"type": "checkbox",
+			"id": "enable_sec",
+			"label": "Enable Section?"
+		}
+	],
+	"blocks":[
+		{
+			"type": "marquee",
+			"name": "Marquee Text",
+			"settings":[
+				{
+					"type": "textarea",
+                    "id": "text_cotnent",
+                    "label": "Content"
+				}
+			]
+		}
+	],
+	"presets": [
+      {
+        "name": "Marquee",
+        "category": "Index"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

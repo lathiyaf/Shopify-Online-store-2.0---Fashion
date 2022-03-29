@@ -1,0 +1,148 @@
+<section class="so-what-it">
+  <div class="container">
+    <div class="main_row">
+      <div class="left_col">
+        <div class="content_div">
+          {% if section.settings.label_txt != blank %}
+          <div class="label_box">{{ section.settings.label_txt }}</div>
+          {% endif %}
+          {% if section.settings.title_txt != blank %}
+          <h3>{{ section.settings.title_txt }}</h3>
+          {% endif %}
+          {% if section.settings.content_txt != blank %}
+          <div class="richtxt">{{ section.settings.content_txt }}</div>
+          {% endif %}
+          {% if section.settings.btn_txt != blank %}
+          <a class="btn-primary" href="{{ section.settings.btn_url }}">{{ section.settings.btn_txt }}</a>
+          {% endif %}		
+        </div>
+        <div class="img_slider_so">
+          {% for block in section.blocks limit:3 %}
+          <div class="img_div">
+            {% if block.settings.slide_img != blank %}
+              <img src="{{ block.settings.slide_img | img_url: 'master' }}" alt="{{ section.settings.right_title_txt }}">
+            {% endif %}	
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="right_col">
+        <div class="img_div">
+          {% if section.settings.main_img != blank %}
+          <img src="{{ section.settings.main_img | img_url: 'master' }}" alt="{{ section.settings.title_txt }}">
+          {% endif %}	
+        </div>	
+        <div class="content_div">
+          {% if section.settings.right_label_txt != blank %}
+          <div class="label_box">{{ section.settings.right_label_txt }}</div>
+          {% endif %}
+          {% if section.settings.right_title_txt != blank %}
+          <h3>{{ section.settings.right_title_txt }}</h3>
+          {% endif %}
+          {% if section.settings.right_content_txt != blank %}
+          <div class="richtxt">{{ section.settings.right_content_txt }}</div>
+          {% endif %}
+          {% if section.settings.right_btn_txt != blank %}
+          <a class="btn-primary" href="{{ section.settings.right_btn_url }}">{{ section.settings.right_btn_txt }}</a>
+          {% endif %}		
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "So What It",
+    "settings": [
+		  {
+			"type": "header",
+			"content": "Left Content"
+		  },
+          {
+            "type": "image_picker",
+            "id": "main_img",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "label_txt",
+            "label": "Label"
+          },
+          {
+            "type": "textarea",
+            "id": "title_txt",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "content_txt",
+            "label": "Content"
+          },
+          {
+            "type": "text",
+            "id": "btn_txt",
+            "label": "Button Title"
+          },
+          {
+            "type": "url",
+            "id": "btn_url",
+            "label": "Button Url"
+          },
+		  {
+			"type": "header",
+			"content": "Right Content"
+		  },
+		  {
+            "type": "text",
+            "id": "right_label_txt",
+            "label": "Label"
+          },
+          {
+            "type": "textarea",
+            "id": "right_title_txt",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "right_content_txt",
+            "label": "Content"
+          },
+          {
+            "type": "text",
+            "id": "right_btn_txt",
+            "label": "Button Title"
+          },
+          {
+            "type": "url",
+            "id": "right_btn_url",
+            "label": "Button Url"
+          }
+	],
+	"blocks":[
+		{
+			"type": "img_sldier",
+			"name": "Slide Image",
+			"settings":[
+				{
+                  "type": "image_picker",
+                  "id": "slide_img",
+                  "label": "Image"
+                }
+				
+			]
+		}
+	],
+	"presets": [
+      {
+        "name": "So What It",
+        "category": "Index"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

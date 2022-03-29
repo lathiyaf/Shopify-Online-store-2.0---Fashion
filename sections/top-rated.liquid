@@ -1,0 +1,83 @@
+<section class="top-rated">
+  <div class="container">
+    <div class="title_wrapper">
+      {% if section.settings.title_txt != blank %}
+      <h3>{{ section.settings.title_txt }}</h3>
+      {% endif %}
+      {% if section.settings.subtitle_txt != blank %}
+      <p>{{ section.settings.subtitle_txt }}</p>
+      {% endif %}
+    </div>
+    <div class="top_rated_row">
+      {% for block in section.blocks %}
+      <div class="slide_box">
+        <div class="top_rated_box">
+          {% if block.settings.title_txt != blank %}
+          <h4>{{block.settings.title_txt}}</h4>
+          {% endif %}
+          {% include 'icon-quote' %}
+          {% if block.settings.content_txt != blank %}
+          <div class="content_box">
+          	{{ block.settings.content_txt }}
+          </div>
+          {% endif %}
+          {% include 'verify-buyer' %}
+          <p class="customer_star"> -{{ block.settings.customer_txt }} {% include 'yellow-star' %}</p>
+      	</div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "Top Rated",
+    "settings": [
+		{
+        	"type": "textarea",
+        	"id": "title_txt",
+        	"label": "Title"
+        },
+		{
+        	"type": "textarea",
+        	"id": "subtitle_txt",
+        	"label": "Subtitle"
+        }
+	],
+	"blocks":[
+		{
+			"type": "reviews",
+			"name": "Review",
+			"settings":[
+				{
+					"type": "textarea",
+					"id": "title_txt",
+					"label": "Title"
+				},
+				{
+					"type": "textarea",
+					"id": "content_txt",
+					"label": "Content"
+				},
+				{
+					"type": "textarea",
+					"id": "customer_txt",
+					"label": "Customer Name"
+				}
+			]
+		}
+	],
+	"presets": [
+      {
+        "name": "Top Rated",
+        "category": "Index"
+      }
+    ]	
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

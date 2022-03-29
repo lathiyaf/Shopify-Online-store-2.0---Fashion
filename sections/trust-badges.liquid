@@ -1,0 +1,57 @@
+<section class="trust-badges">
+  <div class="container">
+    <div class="main_row_badges">
+      {% for block in section.blocks %}
+      <div class="badges_slide">
+        <div class="badges_box">
+          {% if block.settings.icon_code != blank %}
+          <div class="icon_box">
+            {{ block.settings.icon_code }}
+          </div>
+          {% endif %}
+          {% if block.settings.title_txt != blank %}
+          	<h4>{{ block.settings.title_txt }}</h4>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% schema %}
+  {
+    "name": "Trust Badges",
+    "settings": [
+	],
+	"blocks":[
+		{
+			"type": "trust_badges",
+			"name": "Icon Box",
+			"settings":[
+				{
+                    "type": "html",
+                    "id": "icon_code",
+                    "label": "SVG Icon"
+                },
+                {
+                    "type": "textarea",
+                    "id": "title_txt",
+                    "label": "Title"
+                }
+			]
+		}
+	],
+	"presets": [
+      {
+        "name": "Trust Badges",
+        "category": "Index"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

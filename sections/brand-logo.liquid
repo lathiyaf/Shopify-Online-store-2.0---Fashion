@@ -1,0 +1,56 @@
+<section class="brand-section" id="as_seen_on">
+  <div class="container">
+    <div class="title_wrapper">
+      {% if section.settings.title_txt != blank %}
+      	<h4>{{ section.settings.title_txt }}</h4>
+      {% endif %}
+    </div>
+   </div>
+    <div class="inner_row brand_inner_row">
+      {% for block in section.blocks %}
+        {% if block.settings.svg_code != blank %}
+        <div class="box_logo">
+          {{ block.settings.svg_code }}
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  
+</section>
+{% schema %}
+  {
+    "name": "Brand Logo",
+    "settings": [
+		{
+			"type": "textarea",
+			"id": "title_txt",
+			"label": "Title"
+		}
+	],
+	"blocks":[
+		{
+			"type": "logos",
+			"name": "Logo",
+			"settings":[
+				{
+					"type": "html",
+					"id": "svg_code",
+					"label": "Logo Code"
+				}
+			]
+		}
+	],
+	"presets": [
+      {
+        "name": "Brand Logo",
+        "category": "Index"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}

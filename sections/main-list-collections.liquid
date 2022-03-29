@@ -1,0 +1,25 @@
+
+
+<link href="{{ 'collection-page.scss.css' | asset_url }}" rel="stylesheet">
+
+<section class="collection_product product_sec">
+  <div class="container">
+  	<div class="title_wrapper">
+      <h3>Collections</h3>
+    </div>
+    <div class="product_row_collection">
+      {%- for collection in collections -%}
+        <div class="product_box">
+          <a href="{{ collection.url }}">
+          <div class="img_box">
+          	<img src="{{ collection.image | img_url: 'master' }}" alt="{{ collection.title }}">
+           </div>
+          </a>
+          <div class="content_box">
+            <a href="{{collection.url}}" class="btn-primary">{{ collection.title }} →</a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,233 @@
+<section class="pdp_so-what-it">
+    <div class="main_row">
+      <div class="container">
+      	<div class="left_col">
+        <div class="content_div">
+          {% if section.settings.label_txt != blank %}
+          <div class="label_box">{{ section.settings.label_txt }}</div>
+          {% endif %}
+          {% if section.settings.title_txt != blank %}
+          <h3>{{ section.settings.title_txt }}</h3>
+          {% endif %}
+         
+          <div class="richtxt">
+            {% if section.settings.top_row_1 != blank %}
+            <p>{{ section.settings.top_row_1 }}</p>
+            {% endif %}
+            {% if section.settings.top_row_1 != blank %}
+            <p>{{ section.settings.top_row_2 }}</p>
+            {% endif %}
+            {% if section.settings.top_row_1 != blank %}
+            <p>{{ section.settings.top_row_3 }}</p>
+            {% endif %}
+            {% if section.settings.top_row_1 != blank %}
+            <p>{{ section.settings.top_row_4 }}</p>
+            {% endif %}
+          </div>
+          	
+        </div>
+        <div class="img_slider_so">
+          {% for block in section.blocks limit:3 %}
+          <div class="img_div">
+            {% if block.settings.slide_img != blank %}
+              <img src="{{ block.settings.slide_img | img_url: 'master' }}" alt="{{ section.settings.label_txt }}">
+            {% endif %}	
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      </div>
+      <div class="bottom_row">
+        <div class="container">
+          <div class="right_col">
+            <div class="img_div">
+              {% if section.settings.main_img != blank %}
+              <img src="{{ section.settings.main_img | img_url: 'master' }}" alt="{{section.settings.right_label_txt}}">
+              {% endif %}	
+            </div>	
+            <div class="content_div">
+              {% if section.settings.right_label_txt != blank %}
+              <div class="label_box">{{ section.settings.right_label_txt }}</div>
+              {% endif %}
+              {% if section.settings.right_title_txt != blank %}
+              <h3>{{ section.settings.right_title_txt }}</h3>
+              {% endif %}
+              {% if section.settings.right_subtitle_txt != blank %}
+              <div class="subtitle_txt">{{ section.settings.right_subtitle_txt }}</div>
+              {% endif %}
+              <div class="icon_box">
+                {% if section.settings.icon_1_title != blank %}
+                <div class="icon_inner_box">
+                    <div class="img_box">
+                      <img src="{{ section.settings.icon_1 | img_url: 'master' }}" alt="{{ section.settings.icon_1_title }}">
+                    </div>
+                    <p>{{ section.settings.icon_1_title }}</p>
+                </div>
+                {% endif %}
+                {% if section.settings.icon_2_title != blank %}
+                <div class="icon_inner_box">
+                    <div class="img_box">
+                      <img src="{{ section.settings.icon_2 | img_url: 'master' }}" alt="{{ section.settings.icon_2_title }}">
+                    </div>
+                    <p>{{ section.settings.icon_2_title }}</p>
+                </div>
+                {% endif %}
+                {% if section.settings.icon_3_title != blank %}
+                <div class="icon_inner_box">
+                    <div class="img_box">
+                      <img src="{{ section.settings.icon_3 | img_url: 'master' }}" alt="{{ section.settings.icon_3_title }}">
+                    </div>
+                    <p>{{ section.settings.icon_3_title }}</p>
+                </div>
+                {% endif %}
+                {% if section.settings.icon_4_title != blank %}
+                <div class="icon_inner_box">
+                    <div class="img_box">
+                      <img src="{{ section.settings.icon_4 | img_url: 'master' }}" alt="{{ section.settings.icon_4_title }}">
+                    </div>
+                    <p>{{ section.settings.icon_4_title }}</p>
+                </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</section>
+{% schema %}
+  {
+    "name": "So What It",
+    "settings": [
+		  
+		  {
+			"type": "header",
+			"content": "Top Content"
+		  },
+		  {
+            "type": "text",
+            "id": "label_txt",
+            "label": "Label"
+          },
+          {
+            "type": "richtext",
+            "id": "title_txt",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "top_row_1",
+            "label": "Point 1"
+          },
+		  {
+            "type": "text",
+            "id": "top_row_2",
+            "label": "Point 2"
+          },
+		  {
+            "type": "text",
+            "id": "top_row_3",
+            "label": "Point 3"
+          },
+		  {
+            "type": "text",
+            "id": "top_row_4",
+            "label": "Point 4"
+          },
+		  {
+			"type": "header",
+			"content": "Bottom Content"
+		  },
+          {
+            "type": "image_picker",
+            "id": "main_img",
+            "label": "Image"
+          },
+		  {
+            "type": "text",
+            "id": "right_label_txt",
+            "label": "Label"
+          },
+          {
+            "type": "richtext",
+            "id": "right_title_txt",
+            "label": "Title"
+          },
+		  {
+            "type": "richtext",
+            "id": "right_subtitle_txt",
+            "label": "Subtitle"
+          },
+		  {
+			"type": "header",
+			"content": "Icons"
+		  },
+          {
+            "type": "image_picker",
+            "id": "icon_1",
+            "label": "Icon 1"
+          },
+		  {
+            "type": "text",
+            "id": "icon_1_title",
+            "label": "Icon 1 Title"
+          },
+		  {
+            "type": "image_picker",
+            "id": "icon_2",
+            "label": "Icon 2"
+          },
+		  {
+            "type": "text",
+            "id": "icon_2_title",
+            "label": "Icon 2 Title"
+          },
+		  {
+            "type": "image_picker",
+            "id": "icon_3",
+            "label": "Icon 3"
+          },
+		  {
+            "type": "text",
+            "id": "icon_3_title",
+            "label": "Icon 3 Title"
+          },
+		  {
+            "type": "image_picker",
+            "id": "icon_4",
+            "label": "Icon 4"
+          },
+		  {
+            "type": "text",
+            "id": "icon_4_title",
+            "label": "Icon 4 Title"
+          }
+	],
+	"blocks":[
+		{
+			"type": "img_sldier",
+			"name": "Slide Image",
+			"settings":[
+				{
+                  "type": "image_picker",
+                  "id": "slide_img",
+                  "label": "Image"
+                }
+				
+			]
+		}
+	],
+	"presets": [
+      {
+        "name": "PDP So What It",
+        "category": "Index"
+      }
+    ]
+  }
+{% endschema %}
+
+{% stylesheet %}
+{% endstylesheet %}
+
+{% javascript %}
+{% endjavascript %}
